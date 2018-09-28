@@ -6,29 +6,16 @@
     android:layout_height="match_parent"
     tools:context=".gameSelectActivity">
 
-    <Button
-        android:id="@+id/button2"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="노래 가사 맞추기"
-         />
 
     <Button
-        android:id="@+id/button3"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="캐릭터 맞추기"
-         />
-
-    <Button
-        android:id="@+id/button"
+        android:id="@+id/gameselect_gamestart_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="영화 제목 맞추기"
          />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/gameselect_info_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="SELECT THE GAME"
