@@ -12,6 +12,7 @@ import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -31,16 +32,39 @@ public class gameViewActivity extends AppCompatActivity {
 
         gameView_lyric_textView = findViewById(R.id.gameView_lyric_textView);
         AsyncTask<String, Void, String> ppg =  new PapagoTranslateNMT();
-        String lyrics = "안녕하세요 만나서 반가워요";
+        String lyrics = ReadTextFile();
         ppg.execute (lyrics);
     }
 
+    public String ReadTextFile() {
+        try {
+            InputStream in = getResources().openRawResource(R.raw.rl1);
+            if (in != null) {
+                InputStreamReader stream = new InputStreamReader(in, "utf-8");
+                BufferedReader buffer = new BufferedReader(stream);
+
+                String read;
+                StringBuilder sb = new StringBuilder("");
+
+                while ((read = buffer.readLine()) != null) {
+                    sb.append(read + "\n");
+                }
+
+                in.close();
+                return sb.toString();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
+    }
 
     // 네이버 기계번역 (Papago SMT) API 예제
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
 
-        String clientId = "";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "";//애플리케이션 클라이언트 시크릿값";
+        String clientId = "XcC6VIXL3SQhN1JusqpR";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "LWZLx1rj0H";//애플리케이션 클라이언트 시크릿값";
 
         @Override
         protected void onPreExecute() {
