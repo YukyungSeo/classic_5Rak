@@ -3,6 +3,10 @@ package com.example.user.classic_5rak;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
+import android.view.KeyEvent;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -14,15 +18,19 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.Random;
 
 import butterknife.ButterKnife;
 
 
 public class gameViewActivity extends AppCompatActivity {
     private static TextView gameView_lyric_textView;
+    private static EditText gameView_answer_editText;
+    private String title = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,20 +39,53 @@ public class gameViewActivity extends AppCompatActivity {
         ButterKnife.bind(this);
 
         gameView_lyric_textView = findViewById(R.id.gameView_lyric_textView);
+        gameView_answer_editText = findViewById(R.id.gameView_answer_editText);
         AsyncTask<String, Void, String> ppg =  new PapagoTranslateNMT();
+
         String lyrics = ReadTextFile();
-        ppg.execute (lyrics);
+        ppg.execute(lyrics);
+        goAnswer();
+
+    }
+
+    public Boolean goAnswer(){
+        gameView_answer_editText.setOnKeyListener(new View.OnKeyListener(){
+
+            @Override
+            public boolean onKey(View v, int keyCode, KeyEvent event) {
+                switch(keyCode) {
+                    case KeyEvent.KEYCODE_ENTER:
+                        Boolean answer = title.contains(gameView_answer_editText.getText().toString());
+
+                        if (answer) {
+                            gameView_lyric_textView.setText("Correct!");
+                        } else {
+                            gameView_lyric_textView.setText("Nope!T..T");
+                        }
+                }
+                return true;
+            }
+        });
+
+        return gameView_lyric_textView.getText().toString() == "Correct!";
     }
 
     public String ReadTextFile() {
         try {
-            InputStream in = getResources().openRawResource(R.raw.rl1);
+            Field[] raw = R.raw.class.getFields();
+
+            Random rand = new Random();
+            int randomNum = rand.nextInt(3);
+
+            InputStream in = getResources().openRawResource(raw[randomNum].getInt(raw[randomNum]));
             if (in != null) {
                 InputStreamReader stream = new InputStreamReader(in, "utf-8");
                 BufferedReader buffer = new BufferedReader(stream);
 
                 String read;
                 StringBuilder sb = new StringBuilder("");
+
+                title = buffer.readLine();
 
                 while ((read = buffer.readLine()) != null) {
                     sb.append(read + "\n");
@@ -64,7 +105,7 @@ public class gameViewActivity extends AppCompatActivity {
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
 
         String clientId = "XcC6VIXL3SQhN1JusqpR";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "LWZLx1rj0H";//애플리케이션 클라이언트 시크릿값";
+        String clientSecret = "GiYlv9iDUz";//애플리케이션 클라이언트 시크릿값";
 
         @Override
         protected void onPreExecute() {
@@ -140,3 +181,4 @@ public class gameViewActivity extends AppCompatActivity {
         }
     }
 }
+

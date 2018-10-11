@@ -71,7 +71,7 @@ public class MainActivity extends AppCompatActivity {
 
     @OnClick(R.id.main_gameStart_Btn)
     public void gamestart(){
-        Intent intent = new Intent(this, gameSelectActivity.class);
+        Intent intent = new Intent(this, gameStartActivity.class);
         startActivity(intent);
     }
     @OnClick(R.id.main_login_btn)

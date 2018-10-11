@@ -10,24 +10,22 @@ import butterknife.BindView;
 import butterknife.ButterKnife;
 import butterknife.OnClick;
 
-public class gameSelectActivity extends AppCompatActivity{
-    @BindView(R.id.gameselect_gamestart_button)
+public class gameStartActivity extends AppCompatActivity{
+    @BindView(R.id.gs_gameStart_button)
     Button gs_gameStart;
 
-    @BindView(R.id.gameselect_info_textView)
-    TextView info;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_gameselect);
+        setContentView(R.layout.activity_gamestart);
         ButterKnife.bind(this);
     }
 
-    @OnClick(R.id.gameselect_gamestart_button)
+    @OnClick(R.id.gs_gameStart_button)
     public void gs_gamestart(){
         Intent intent = new Intent(getApplicationContext(), gameViewActivity.class);
         startActivity(intent);
     }
-
 }
