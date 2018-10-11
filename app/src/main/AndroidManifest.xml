@@ -18,7 +18,7 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".gameSelectActivity"/>
+        <activity android:name=".gameStartActivity"/>
         <activity android:name=".gameViewActivity"/>
     </application>
     <uses-permission android:name="android.permission.INTERNET"/>

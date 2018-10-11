@@ -28,11 +28,11 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:text="TextView"
+        android:imeOptions="actionDone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/gameView_lyric_textView"
         app:layout_constraintVertical_bias="0.751"
-        tools:ignore="MissingConstraints" />
-        />
+        tools:ignore="MissingConstraints"/>
 </android.support.constraint.ConstraintLayout>
