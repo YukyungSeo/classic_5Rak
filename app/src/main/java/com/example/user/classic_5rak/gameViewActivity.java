@@ -23,7 +23,6 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -128,6 +127,15 @@ public class gameViewActivity extends AppCompatActivity {
             }
         }
     }
+    @OnClick(R.id.gameView_gamestop_btn)
+    public void gameStop(){
+        if(music != null){
+            music.stop();
+            music.release();
+        }
+
+        finish();
+    }
 
     @OnClick(R.id.gameView_submit_btn)
     public void submit(){
@@ -154,7 +162,7 @@ public class gameViewActivity extends AppCompatActivity {
             Field[] raw = R.raw.class.getFields();
 
             Random rand = new Random();
-            int randomNum = rand.nextInt(12) + 3;
+            int randomNum = rand.nextInt(15) + 3;
 
             String gameName = raw[randomNum].getName();
             if(gameName.contains("crop")){
