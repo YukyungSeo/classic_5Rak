@@ -1,11 +1,14 @@
 package com.example.user.classic_5rak;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -47,8 +50,16 @@ public class gameViewActivity extends AppCompatActivity {
         gameView_answer_editText = findViewById(R.id.gameView_answer_editText);
         AsyncTask<String, Void, String> ppg =  new PapagoTranslateNMT();
 
-        String lyrics = ReadTextFile();
-        ppg.execute(lyrics);
+        Random rand = new Random();
+        int randomNum = rand.nextInt(2);
+
+        switch (randomNum) {
+            case 0:
+                String lyrics = readTextFile();
+                ppg.execute(lyrics);
+            case 1:
+                readImageFile();
+        }
     }
 
     @OnClick(R.id.gameView_submit_btn)
@@ -67,7 +78,7 @@ public class gameViewActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public String ReadTextFile() {
+    public String readTextFile() {
         try {
             Field[] raw = R.raw.class.getFields();
 
@@ -98,11 +109,21 @@ public class gameViewActivity extends AppCompatActivity {
         return "";
     }
 
+    public void readImageFile(){
+        // drawable 리소스 객체 가져오기
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.crop1);
+
+        // XML 에 있는 ImageView 위젯에 이미지 셋팅
+        ImageView imageView = (ImageView) findViewById(R.id.gameView_img_imgView);
+        imageView.setImageDrawable(drawable);
+    }
+
+
     // 네이버 기계번역 (Papago SMT) API 예제
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
 
-        String clientId = "";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "";//애플리케이션 클라이언트 시크릿값";
+        String clientId = "XcC6VIXL3SQhN1JusqpR";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "3jzTICccea";//애플리케이션 클라이언트 시크릿값";
 
         @Override
         protected void onPreExecute() {
