@@ -182,7 +182,7 @@ public class gameViewActivity extends AppCompatActivity {
                 music.setLooping(false);
 
                 music.start();
-
+                gameView_lyric_textView.setText("Playing Sound");
                 String[] str = raw[randomNum].getName().split("_");
                 int index = Integer.parseInt(str[1]);
                 title = answerSheet_Reverse.get(index-1).toString();
@@ -192,7 +192,7 @@ public class gameViewActivity extends AppCompatActivity {
                 music.setLooping(true);
 
                 music.start();
-
+                gameView_lyric_textView.setText("Playing Sound");
                 String[] str = raw[randomNum].getName().split("_");
                 int index = Integer.parseInt(str[1]);
                 title = answerSheet_Movie.get(index-1).toString();
@@ -230,8 +230,8 @@ public class gameViewActivity extends AppCompatActivity {
     // 네이버 기계번역 (Papago SMT) API 예제
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
 
-        String clientId = "";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "";//애플리케이션 클라이언트 시크릿값";
+        String clientId = "csyDLbiQqt2_tLrJvllY";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "HpDG1p46QU";//애플리케이션 클라이언트 시크릿값";
 
         @Override
         protected void onPreExecute() {
