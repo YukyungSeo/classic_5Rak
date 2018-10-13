@@ -33,7 +33,7 @@
         android:layout_marginStart="8dp"
         android:layout_marginTop="8dp"
         android:imeOptions="actionDone"
-        android:text="TextView"
+        android:hint="your answer"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toStartOf="@+id/gameView_submit_btn"
         app:layout_constraintHorizontal_bias="0.833"

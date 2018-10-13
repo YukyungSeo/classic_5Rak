@@ -107,6 +107,26 @@ public class gameViewActivity extends AppCompatActivity {
                 e.printStackTrace();
             }
         }
+
+        InputStream in_movie = getResources().openRawResource(R.raw._answersheet_movie);
+
+        if (in_movie != null) {
+            try {
+                InputStreamReader stream = new InputStreamReader(in_movie, "utf-8");
+                BufferedReader buffer = new BufferedReader(stream);
+
+                String read;
+                StringBuilder sb = new StringBuilder("");
+
+                while ((read = buffer.readLine()) != null) {
+                    answerSheet_Movie.add(read);
+                }
+
+                in_movie.close();
+            }  catch (Exception e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     @OnClick(R.id.gameView_submit_btn)
@@ -134,8 +154,7 @@ public class gameViewActivity extends AppCompatActivity {
             Field[] raw = R.raw.class.getFields();
 
             Random rand = new Random();
-            int randomNum = rand.nextInt(7)+2;
-            randomNum = 7;
+            int randomNum = rand.nextInt(12) + 3;
 
             String gameName = raw[randomNum].getName();
             if(gameName.contains("crop")){
@@ -159,6 +178,16 @@ public class gameViewActivity extends AppCompatActivity {
                 String[] str = raw[randomNum].getName().split("_");
                 int index = Integer.parseInt(str[1]);
                 title = answerSheet_Reverse.get(index-1).toString();
+            }
+            else if(gameName.contains("movie")){
+                music = MediaPlayer.create(this, raw[randomNum].getInt(raw[randomNum]));
+                music.setLooping(true);
+
+                music.start();
+
+                String[] str = raw[randomNum].getName().split("_");
+                int index = Integer.parseInt(str[1]);
+                title = answerSheet_Movie.get(index-1).toString();
             }
             else{
                 InputStream in = getResources().openRawResource(raw[randomNum].getInt(raw[randomNum]));
