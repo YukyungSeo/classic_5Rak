@@ -59,7 +59,6 @@ public class MainActivity extends AppCompatActivity {
             password.setInputType(InputType.TYPE_CLASS_TEXT|InputType.TYPE_TEXT_VARIATION_PASSWORD);
             pwdCheck=false;
             showPassWord.setChecked(pwdCheck);
-
         }
         else{
             password.setInputType(InputType.TYPE_TEXT_VARIATION_VISIBLE_PASSWORD);
