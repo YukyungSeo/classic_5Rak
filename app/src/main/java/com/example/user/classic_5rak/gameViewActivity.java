@@ -1,8 +1,11 @@
 package com.example.user.classic_5rak;
 
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.gson.Gson;
@@ -12,6 +15,7 @@ import com.google.gson.JsonParser;
 
 import java.io.BufferedReader;
 import java.io.DataOutputStream;
+import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
@@ -31,8 +35,40 @@ public class gameViewActivity extends AppCompatActivity {
 
         gameView_lyric_textView = findViewById(R.id.gameView_lyric_textView);
         AsyncTask<String, Void, String> ppg =  new PapagoTranslateNMT();
-        String lyrics = "안녕하세요 만나서 반가워요";
+        String lyrics = ReadTextFile();
         ppg.execute (lyrics);
+
+        // drawable 리소스 객체 가져오기
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.crop1);
+
+        // XML 에 있는 ImageView 위젯에 이미지 셋팅
+        ImageView imageView = (ImageView) findViewById(R.id.imageView2);
+        imageView.setImageDrawable(drawable);
+
+    }
+
+    public String ReadTextFile() {
+        try {
+            InputStream in = getResources().openRawResource(R.raw.rl1);
+            if (in != null) {
+                InputStreamReader stream = new InputStreamReader(in, "utf-8");
+                BufferedReader buffer = new BufferedReader(stream);
+
+                String read;
+                StringBuilder sb = new StringBuilder("");
+
+                while ((read = buffer.readLine()) != null) {
+                    sb.append(read + "\n");
+                }
+
+                in.close();
+                return sb.toString();
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        return "";
     }
 
 
