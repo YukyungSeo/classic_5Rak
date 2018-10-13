@@ -1,13 +1,13 @@
 package com.example.user.classic_5rak;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
-import android.view.KeyEvent;
-import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -24,13 +24,18 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Random;
 
+import butterknife.BindView;
 import butterknife.ButterKnife;
+import butterknife.OnClick;
 
 
 public class gameViewActivity extends AppCompatActivity {
     private static TextView gameView_lyric_textView;
     private static EditText gameView_answer_editText;
     private String title = "";
+
+    @BindView(R.id.gameView_submit_btn)
+    Button submit;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,30 +49,22 @@ public class gameViewActivity extends AppCompatActivity {
 
         String lyrics = ReadTextFile();
         ppg.execute(lyrics);
-        goAnswer();
-
     }
 
-    public Boolean goAnswer(){
-        gameView_answer_editText.setOnKeyListener(new View.OnKeyListener(){
+    @OnClick(R.id.gameView_submit_btn)
+    public void submit(){
+        Boolean answer = title.contains(gameView_answer_editText.getText().toString());
 
-            @Override
-            public boolean onKey(View v, int keyCode, KeyEvent event) {
-                switch(keyCode) {
-                    case KeyEvent.KEYCODE_ENTER:
-                        Boolean answer = title.contains(gameView_answer_editText.getText().toString());
-
-                        if (answer) {
-                            gameView_lyric_textView.setText("Correct!");
-                        } else {
-                            gameView_lyric_textView.setText("Nope!T..T");
-                        }
-                }
-                return true;
-            }
-        });
-
-        return gameView_lyric_textView.getText().toString() == "Correct!";
+        if (answer) {
+            Toast.makeText(this, "Correct!", Toast.LENGTH_LONG).show();
+            gameView_lyric_textView.setText("loading...");
+        } else {
+            Toast.makeText(this, "Nope!T..T", Toast.LENGTH_LONG).show();
+            gameView_lyric_textView.setText("loading...");
+        }
+        Intent intent = getIntent();
+        finish();
+        startActivity(intent);
     }
 
     public String ReadTextFile() {
