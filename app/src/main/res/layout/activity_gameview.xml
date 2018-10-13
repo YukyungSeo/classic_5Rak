@@ -19,6 +19,11 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:layout_editor_absoluteY="195dp" />
 
+    <ImageView
+        android:id="@+id/gameView_img_imgView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content" />
+
     <EditText
         android:id="@+id/gameView_answer_editText"
         android:layout_width="150dp"

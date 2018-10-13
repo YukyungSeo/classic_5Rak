@@ -1,11 +1,15 @@
 package com.example.user.classic_5rak;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -18,10 +22,12 @@ import java.io.BufferedReader;
 import java.io.DataOutputStream;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.lang.reflect.Array;
 import java.lang.reflect.Field;
 import java.net.HttpURLConnection;
 import java.net.URL;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Random;
 
 import butterknife.BindView;
@@ -32,6 +38,8 @@ import butterknife.OnClick;
 public class gameViewActivity extends AppCompatActivity {
     private static TextView gameView_lyric_textView;
     private static EditText gameView_answer_editText;
+    private static ImageView gameView_img_imgView;
+    private static ArrayList answerSheet_Crop;
     private String title = "";
 
     @BindView(R.id.gameView_submit_btn)
@@ -45,10 +53,34 @@ public class gameViewActivity extends AppCompatActivity {
 
         gameView_lyric_textView = findViewById(R.id.gameView_lyric_textView);
         gameView_answer_editText = findViewById(R.id.gameView_answer_editText);
-        AsyncTask<String, Void, String> ppg =  new PapagoTranslateNMT();
+        gameView_img_imgView = (ImageView) findViewById(R.id.gameView_img_imgView);
+        answerSheet_Crop = new ArrayList();
+        answerSheet();
 
-        String lyrics = ReadTextFile();
-        ppg.execute(lyrics);
+
+        AsyncTask<String, Void, String> ppg =  new PapagoTranslateNMT();
+        randomGame(ppg);
+    }
+    public void answerSheet() {
+        InputStream in = getResources().openRawResource(R.raw._answersheet);
+
+        if (in != null) {
+            try {
+                InputStreamReader stream = new InputStreamReader(in, "utf-8");
+                BufferedReader buffer = new BufferedReader(stream);
+
+                String read;
+                StringBuilder sb = new StringBuilder("");
+
+                while ((read = buffer.readLine()) != null) {
+                    answerSheet_Crop.add(read);
+                }
+
+         in.close();
+            }  catch (Exception e) {
+            e.printStackTrace();
+            }
+        }
     }
 
     @OnClick(R.id.gameView_submit_btn)
@@ -67,36 +99,54 @@ public class gameViewActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    public String ReadTextFile() {
+    public void randomGame(AsyncTask<String, Void, String> ppg) {
         try {
             Field[] raw = R.raw.class.getFields();
 
             Random rand = new Random();
-            int randomNum = rand.nextInt(3);
+            int randomNum = rand.nextInt(7)+1;
 
-            InputStream in = getResources().openRawResource(raw[randomNum].getInt(raw[randomNum]));
-            if (in != null) {
-                InputStreamReader stream = new InputStreamReader(in, "utf-8");
-                BufferedReader buffer = new BufferedReader(stream);
+            if(raw[randomNum].getName().contains("crop")){
+                Drawable drawable = ContextCompat.getDrawable(this, raw[randomNum].getInt(raw[randomNum]));
 
-                String read;
-                StringBuilder sb = new StringBuilder("");
+                // XML 에 있는 ImageView 위젯에 이미지 셋팅
+                gameView_img_imgView.setImageDrawable(drawable);
+                gameView_img_imgView.setVisibility(View.VISIBLE);
+                gameView_lyric_textView.setVisibility(View.INVISIBLE);
 
-                title = buffer.readLine();
+                String[] str = raw[randomNum].getName().split("_");
+                int index = Integer.parseInt(str[1]);
+                title = answerSheet_Crop.get(index-1).toString();
+            }
+            else{
+                InputStream in = getResources().openRawResource(raw[randomNum].getInt(raw[randomNum]));
 
-                while ((read = buffer.readLine()) != null) {
-                    sb.append(read + "\n");
+                gameView_img_imgView.setVisibility(View.INVISIBLE);
+                gameView_lyric_textView.setVisibility(View.VISIBLE);
+
+                if (in != null) {
+                    InputStreamReader stream = new InputStreamReader(in, "utf-8");
+                    BufferedReader buffer = new BufferedReader(stream);
+
+                    String read;
+                    StringBuilder sb = new StringBuilder("");
+
+                    title = buffer.readLine();
+
+                    while ((read = buffer.readLine()) != null) {
+                        sb.append(read + "\n");
+                    }
+
+                    in.close();
+                    ppg.execute(sb.toString());
                 }
-
-                in.close();
-                return sb.toString();
             }
 
         } catch (Exception e) {
             e.printStackTrace();
         }
-        return "";
     }
+
 
     // 네이버 기계번역 (Papago SMT) API 예제
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
