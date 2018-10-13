@@ -1,9 +1,12 @@
 package com.example.user.classic_5rak;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import butterknife.BindView;
@@ -13,6 +16,7 @@ import butterknife.OnClick;
 public class gameStartActivity extends AppCompatActivity{
     @BindView(R.id.gs_gameStart_button)
     Button gs_gameStart;
+
 
 
 
@@ -27,5 +31,11 @@ public class gameStartActivity extends AppCompatActivity{
     public void gs_gamestart(){
         Intent intent = new Intent(getApplicationContext(), gameViewActivity.class);
         startActivity(intent);
+
+
     }
+
+
+
+
 }

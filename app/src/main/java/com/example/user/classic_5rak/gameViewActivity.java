@@ -41,6 +41,8 @@ public class gameViewActivity extends AppCompatActivity {
     private static ImageView gameView_img_imgView;
     private static ArrayList answerSheet_Crop;
     private String title = "";
+    public int life =3 ;
+    private static ImageView life_Image;
 
     @BindView(R.id.gameView_submit_btn)
     Button submit;
@@ -54,13 +56,29 @@ public class gameViewActivity extends AppCompatActivity {
         gameView_lyric_textView = findViewById(R.id.gameView_lyric_textView);
         gameView_answer_editText = findViewById(R.id.gameView_answer_editText);
         gameView_img_imgView = (ImageView) findViewById(R.id.gameView_img_imgView);
+        life_Image = (ImageView) findViewById(R.id.life_Image);
+        showLife();
         answerSheet_Crop = new ArrayList();
         answerSheet();
-
 
         AsyncTask<String, Void, String> ppg =  new PapagoTranslateNMT();
         randomGame(ppg);
     }
+
+    public void showLife(){
+        Drawable drawable = ContextCompat.getDrawable(this, R.drawable.life3);
+        switch (life) {
+            case 1:
+                drawable = ContextCompat.getDrawable(this, R.drawable.life1);
+                break;
+            case 2:
+                drawable = ContextCompat.getDrawable(this, R.drawable.life2);
+                break;
+        }
+        life_Image.setImageDrawable(drawable);
+    }
+
+
     public void answerSheet() {
         InputStream in = getResources().openRawResource(R.raw._answersheet);
 
@@ -91,13 +109,23 @@ public class gameViewActivity extends AppCompatActivity {
             Toast.makeText(this, "Correct!", Toast.LENGTH_LONG).show();
             gameView_lyric_textView.setText("loading...");
         } else {
+            setLife();
+            showLife();
             Toast.makeText(this, "Nope!T..T", Toast.LENGTH_LONG).show();
             gameView_lyric_textView.setText("loading...");
+
         }
         Intent intent = getIntent();
         finish();
-        startActivity(intent);
+        if(this.life>1) {
+            startActivity(intent);
+        }
     }
+
+    private int setLife(){
+        return --this.life;
+    }
+
 
     public void randomGame(AsyncTask<String, Void, String> ppg) {
         try {
@@ -151,8 +179,8 @@ public class gameViewActivity extends AppCompatActivity {
     // 네이버 기계번역 (Papago SMT) API 예제
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
 
-        String clientId = "XcC6VIXL3SQhN1JusqpR";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "lfYszmu276";//애플리케이션 클라이언트 시크릿값";
+        String clientId = "csyDLbiQqt2_tLrJvllY";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "HpDG1p46QU";//애플리케이션 클라이언트 시크릿값";
 
         @Override
         protected void onPreExecute() {

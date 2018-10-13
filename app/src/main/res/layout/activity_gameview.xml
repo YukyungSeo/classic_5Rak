@@ -22,7 +22,12 @@
     <ImageView
         android:id="@+id/gameView_img_imgView"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
     <EditText
         android:id="@+id/gameView_answer_editText"
@@ -57,5 +62,13 @@
         app:layout_constraintStart_toEndOf="@+id/gameView_answer_editText"
         app:layout_constraintTop_toBottomOf="@+id/gameView_lyric_textView"
         app:layout_constraintVertical_bias="0.76" />
+
+    <ImageView
+        android:id="@+id/life_Image"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        />
 
 </android.support.constraint.ConstraintLayout>
