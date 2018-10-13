@@ -122,8 +122,8 @@ public class gameViewActivity extends AppCompatActivity {
     // 네이버 기계번역 (Papago SMT) API 예제
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
 
-        String clientId = "XcC6VIXL3SQhN1JusqpR";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "3jzTICccea";//애플리케이션 클라이언트 시크릿값";
+        String clientId = "";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "";//애플리케이션 클라이언트 시크릿값";
 
         @Override
         protected void onPreExecute() {
