@@ -2,6 +2,7 @@ package com.example.user.classic_5rak;
 
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
+import android.media.MediaPlayer;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.v4.content.ContextCompat;
@@ -40,6 +41,9 @@ public class gameViewActivity extends AppCompatActivity {
     private static EditText gameView_answer_editText;
     private static ImageView gameView_img_imgView;
     private static ArrayList answerSheet_Crop;
+    private static ArrayList answerSheet_Movie;
+    private static ArrayList answerSheet_Reverse;
+    MediaPlayer music;
     private String title = "";
 
     @BindView(R.id.gameView_submit_btn)
@@ -55,18 +59,20 @@ public class gameViewActivity extends AppCompatActivity {
         gameView_answer_editText = findViewById(R.id.gameView_answer_editText);
         gameView_img_imgView = (ImageView) findViewById(R.id.gameView_img_imgView);
         answerSheet_Crop = new ArrayList();
+        answerSheet_Movie = new ArrayList();
+        answerSheet_Reverse = new ArrayList();
         answerSheet();
-
 
         AsyncTask<String, Void, String> ppg =  new PapagoTranslateNMT();
         randomGame(ppg);
     }
-    public void answerSheet() {
-        InputStream in = getResources().openRawResource(R.raw._answersheet);
 
-        if (in != null) {
+    public void answerSheet() {
+        InputStream in_crop = getResources().openRawResource(R.raw._answersheet_crop);
+
+        if (in_crop != null) {
             try {
-                InputStreamReader stream = new InputStreamReader(in, "utf-8");
+                InputStreamReader stream = new InputStreamReader(in_crop, "utf-8");
                 BufferedReader buffer = new BufferedReader(stream);
 
                 String read;
@@ -76,9 +82,29 @@ public class gameViewActivity extends AppCompatActivity {
                     answerSheet_Crop.add(read);
                 }
 
-         in.close();
+                in_crop.close();
             }  catch (Exception e) {
-            e.printStackTrace();
+                e.printStackTrace();
+            }
+        }
+
+        InputStream in_reverse = getResources().openRawResource(R.raw._answersheet_reverse);
+
+        if (in_reverse != null) {
+            try {
+                InputStreamReader stream = new InputStreamReader(in_reverse, "utf-8");
+                BufferedReader buffer = new BufferedReader(stream);
+
+                String read;
+                StringBuilder sb = new StringBuilder("");
+
+                while ((read = buffer.readLine()) != null) {
+                    answerSheet_Reverse.add(read);
+                }
+
+                in_reverse.close();
+            }  catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }
@@ -94,6 +120,10 @@ public class gameViewActivity extends AppCompatActivity {
             Toast.makeText(this, "Nope!T..T", Toast.LENGTH_LONG).show();
             gameView_lyric_textView.setText("loading...");
         }
+        if(music!=null) {
+            music.stop();
+            music.release();
+        }
         Intent intent = getIntent();
         finish();
         startActivity(intent);
@@ -104,9 +134,11 @@ public class gameViewActivity extends AppCompatActivity {
             Field[] raw = R.raw.class.getFields();
 
             Random rand = new Random();
-            int randomNum = rand.nextInt(7)+1;
+            int randomNum = rand.nextInt(7)+2;
+            randomNum = 7;
 
-            if(raw[randomNum].getName().contains("crop")){
+            String gameName = raw[randomNum].getName();
+            if(gameName.contains("crop")){
                 Drawable drawable = ContextCompat.getDrawable(this, raw[randomNum].getInt(raw[randomNum]));
 
                 // XML 에 있는 ImageView 위젯에 이미지 셋팅
@@ -117,6 +149,16 @@ public class gameViewActivity extends AppCompatActivity {
                 String[] str = raw[randomNum].getName().split("_");
                 int index = Integer.parseInt(str[1]);
                 title = answerSheet_Crop.get(index-1).toString();
+            }
+            else if(gameName.contains("reverse")){
+                music = MediaPlayer.create(this, raw[randomNum].getInt(raw[randomNum]));
+                music.setLooping(false);
+
+                music.start();
+
+                String[] str = raw[randomNum].getName().split("_");
+                int index = Integer.parseInt(str[1]);
+                title = answerSheet_Reverse.get(index-1).toString();
             }
             else{
                 InputStream in = getResources().openRawResource(raw[randomNum].getInt(raw[randomNum]));
@@ -151,8 +193,8 @@ public class gameViewActivity extends AppCompatActivity {
     // 네이버 기계번역 (Papago SMT) API 예제
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
 
-        String clientId = "XcC6VIXL3SQhN1JusqpR";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "lfYszmu276";//애플리케이션 클라이언트 시크릿값";
+        String clientId = "";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "";//애플리케이션 클라이언트 시크릿값";
 
         @Override
         protected void onPreExecute() {
