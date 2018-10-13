@@ -14,6 +14,9 @@ public class gameStartActivity extends AppCompatActivity{
     @BindView(R.id.gs_gameStart_button)
     Button gs_gameStart;
 
+    @BindView(R.id.gs_gameStop_button)
+    Button gs_gameStop;
+
 
 
     @Override
@@ -27,5 +30,10 @@ public class gameStartActivity extends AppCompatActivity{
     public void gs_gamestart(){
         Intent intent = new Intent(getApplicationContext(), gameViewActivity.class);
         startActivity(intent);
+    }
+
+    @OnClick(R.id.gs_gameStop_button)
+    public void gs_gamestop(){
+        finish();
     }
 }
