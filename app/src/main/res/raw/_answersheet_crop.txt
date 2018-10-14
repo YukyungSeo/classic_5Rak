@@ -1,4 +1,4 @@
-crop1 별이 빛나는 밤 별이빛나는밤 the starry night The starry night
-crop2 이삭 줍는 여인들 이삭줍는여인들 Des glaneuses des glaneuses
-crop3 모나리자 Mona Lisa mona Lisa monalisa
-crop4 최후의 만찬 The Last Supper the last supper
+crop1 별이 빛나는 밤 별이빛나는밤 the starry night
+crop2 이삭 줍는 여인들 이삭줍는여인들 des glaneuses
+crop3 모나리자 mona lisa monalisa
+crop4 최후의 만찬 the last supper
