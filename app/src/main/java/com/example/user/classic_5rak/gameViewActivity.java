@@ -139,9 +139,11 @@ public class gameViewActivity extends AppCompatActivity {
 
     @OnClick(R.id.gameView_submit_btn)
     public void submit(){
-        Boolean answer = title.contains(gameView_answer_editText.getText().toString());
+        String tmp = gameView_answer_editText.getText().toString();
+        Boolean answer = title.contains(tmp.toLowerCase());
+        Boolean empty = !tmp.isEmpty();
 
-        if (answer) {
+        if (answer && empty) {
             Toast.makeText(this, "Correct!", Toast.LENGTH_LONG).show();
             gameView_lyric_textView.setText("loading...");
         } else {
@@ -166,6 +168,7 @@ public class gameViewActivity extends AppCompatActivity {
 
             String gameName = raw[randomNum].getName();
             if(gameName.contains("crop")){
+                Toast.makeText(this, "명화의 이름을 맞춰주세요!", Toast.LENGTH_LONG).show();
                 Drawable drawable = ContextCompat.getDrawable(this, raw[randomNum].getInt(raw[randomNum]));
 
                 // XML 에 있는 ImageView 위젯에 이미지 셋팅
@@ -178,6 +181,7 @@ public class gameViewActivity extends AppCompatActivity {
                 title = answerSheet_Crop.get(index-1).toString();
             }
             else if(gameName.contains("reverse")){
+                Toast.makeText(this, "노래가 거꾸로 나오고 있습니다! 어떤 노래일까요?", Toast.LENGTH_LONG).show();
                 music = MediaPlayer.create(this, raw[randomNum].getInt(raw[randomNum]));
                 music.setLooping(false);
 
@@ -188,6 +192,7 @@ public class gameViewActivity extends AppCompatActivity {
                 title = answerSheet_Reverse.get(index-1).toString();
             }
             else if(gameName.contains("movie")){
+                Toast.makeText(this, "영화 명대사 입니다! 영화 제목을 맞춰주세요!", Toast.LENGTH_LONG).show();
                 music = MediaPlayer.create(this, raw[randomNum].getInt(raw[randomNum]));
                 music.setLooping(true);
 
@@ -198,6 +203,7 @@ public class gameViewActivity extends AppCompatActivity {
                 title = answerSheet_Movie.get(index-1).toString();
             }
             else{
+                Toast.makeText(this, "영어로 번역된 k-pop! 노래 제목을 맞춰주세요!", Toast.LENGTH_LONG).show();
                 InputStream in = getResources().openRawResource(raw[randomNum].getInt(raw[randomNum]));
 
                 gameView_img_imgView.setVisibility(View.INVISIBLE);
@@ -230,8 +236,8 @@ public class gameViewActivity extends AppCompatActivity {
     // 네이버 기계번역 (Papago SMT) API 예제
     private static class PapagoTranslateNMT  extends AsyncTask<String, Void, String> {
 
-        String clientId = "csyDLbiQqt2_tLrJvllY";//애플리케이션 클라이언트 아이디값";
-        String clientSecret = "HpDG1p46QU";//애플리케이션 클라이언트 시크릿값";
+        String clientId = "";//애플리케이션 클라이언트 아이디값";
+        String clientSecret = "";//애플리케이션 클라이언트 시크릿값";
 
         @Override
         protected void onPreExecute() {
